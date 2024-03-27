@@ -1,3 +1,5 @@
+composer require google/apiclient:^2.0
+
 require_once 'vendor/autoload.php';
 
 // Initialize Google client
