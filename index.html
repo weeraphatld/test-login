@@ -1,17 +1,17 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html>
 <head>
     <title>Login Page</title>
 </head>
 <body>
-    <h2>Login Page</h2>
     <form id="loginForm">
-        Username: <input type="text" id="username" required><br>
-        Password: <input type="password" id="password" required><br>
-        <input type="button" value="Login" onclick="submitForm()">
+        Username: <input type="text" id="username"><br>
+        Password: <input type="password" id="password"><br>
+        <input type="button" value="Login" onclick="login()">
     </form>
+    <p id="loginResult"></p>
 
-    <script src="script.js"></script>
+    <!-- อ้างอิงไฟล์ JavaScript -->
+    <script src="login.js"></script>
 </body>
 </html>
