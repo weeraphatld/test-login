@@ -1,35 +1,28 @@
-composer require google/apiclient:^2.0
+<?php
+// login.php
+$username = $_POST['username'];
+$password = $_POST['password'];
 
-require_once 'vendor/autoload.php';
+// แทนที่ด้วย URL ของ API ที่ Sheety ให้คุณ
+$api_url = 'https://api.sheety.co/f42cd6efeb33849230069d25276e089e/loginWeeraphatWebsite/sheet1';
 
-// Initialize Google client
-$client = new Google_Client();
-$client->setApplicationName('Login to Website');
-$client->setScopes(Google_Service_Sheets::SPREADSHEETS_READONLY);
-$client->setAuthConfig('client_secret_556783064607-qec7pvdgq3m50v151qmhfldp9qeposrq.apps.googleusercontent.com (1).json');  // Path to your credentials file
+// ดึงข้อมูลจาก Google Sheets
+$data = file_get_contents($api_url);
+$json = json_decode($data, true);
 
-// Access the sheet
-$service = new Google_Service_Sheets($client);
-$spreadsheetId = '1c1VSLd2CPRnMS1NSkBGh40rUfpOB09YukNoRzYi2dEk';  // ID of your Google Sheet
-$range = 'Sheet1!A:B';  // Range of your data
-$response = $service->spreadsheets_values->get($spreadsheetId, $range);
-$values = $response->getValues();
+$login_success = false;
 
-// Login logic
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
-    foreach ($values as $row) {
-        // Assuming column 1 is username and column 2 is password
-        if ($row[0] == $username && $row[1] == $password) {
-            session_start();
-            $_SESSION['loggedin'] = true;
-            $_SESSION['username'] = $username;
-            // Redirect to a protected page
-            header("Location: protected_page.php");
-            exit();
-        }
+foreach ($json['Sheet1'] as $row) { // แทนที่ 'sheetName' ด้วยชื่อของแผ่นงานของคุณ
+    if ($row['username'] == $username && password_verify($password, $row['password'])) {
+        $login_success = true;
+        break;
     }
-    echo "Invalid credentials!";
 }
+
+if ($login_success) {
+    echo "Login successful!";
+    // โค้ดเพิ่มเติมสำหรับหลังจากการล็อกอินสำเร็จ
+} else {
+    echo "Invalid username or password!";
+}
+?>
