@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Login</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+    <h2>ล็อกอินด้วย Google</h2>
+    <div id="g_id_onload"
+         data-client_id="877496944315-csn41s0i2eb5ifhsd1ubi2t4an9153lj.apps.googleusercontent.com"
+         data-callback="handleCredentialResponse"
+         data-auto_prompt="false">
+    </div>
+    <div class="g_id_signin" data-type="standard"></div>
+
+    <h3>ข้อมูลผู้ใช้</h3>
+    <p id="userEmail"></p>
+
+    <script>
+        function handleCredentialResponse(response) {
+            // Decode JWT token
+            const data = JSON.parse(atob(response.credential.split('.')[1]));
+            document.getElementById("userEmail").innerText = `อีเมล: ${data.email}`;
+        }
+    </script>
+</body>
+</html>
